@@ -71,12 +71,13 @@ class LoginScreen extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent ae)     //pass action listener as a parameter  
     {  
         String sapValue = sapIdField.getText();        //get user entered username from the textField1  
-        String passValue = passwordField.getText();        //get user entered pasword from the textField2  
-        User currentuser= db.getUser(sapValue,passValue);        //check whether the credentials are authentic or not  
-        if (currentuser!=null) {  
+        String passValue = passwordField.getText();        //get user entered password from the textField2  
+        User user= db.getUser(sapValue,passValue);        //check whether the credentials are authentic or not  
+        if (user!=null) {  
              System.out.println("logged in as"); 
-             System.out.println(currentuser); 
-  
+             System.out.println(user);
+             this.removeAll();
+             this.add(new HomeScreen(user,this.db));
         }  
         else{  
             //show error message  

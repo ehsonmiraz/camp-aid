@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import com.dit.db.DataBase;
 import com.dit.models.User;
+import com.dit.utils.constants;
 
 import java.awt.*;  
 import java.awt.event.*;  
@@ -12,13 +13,13 @@ import java.lang.Exception;
 //create CreateLoginForm class to create login form  
 //class extends JFrame to create a window where our component add  
 //class implements ActionListener to perform an action on button click  
-class SignUpScreen extends JPanel implements ActionListener  
+class SignUpScreen extends JPanel implements ActionListener  ,constants
 {   DataBase db;
     //initialize button, panel, label, and text field  
     JButton b1;  
-  
+    JComboBox<String> branchComboBox ;
     JLabel headingLabel, sapIdLabel, rollnoLabel, nameLabel, cgpaLabel, currentSemLabel, totalSemLabel, branchLabel, passLabel; 
-    JTextField headingTextField, sapIdTextField, rollnoTextField, nameTextField, cgpaTextField, currentSemTextField, totalSemTextField, branchTextField, passTextField;  
+    JTextField headingTextField, sapIdTextField, rollnoTextField, nameTextField, cgpaTextField, currentSemTextField, totalSemTextField, passTextField;  
     JPanel headingPanel,sapIdPanel,rollnoPanel,namePanel,cgpaPanel,currentSemPanel,totalSemPanel,branchPanel,passPanel,submitPanel;
       
     //calling constructor  
@@ -84,10 +85,19 @@ class SignUpScreen extends JPanel implements ActionListener
     	branchLabel = new JLabel();  
     	branchLabel.setText("BRANCH");
     	branchLabel.setFont(new Font("Arial", Font.PLAIN, 15));//set label value for textField1    
-    	branchTextField = new JTextField(15);    //set length of the text  
-    	branchPanel=new JPanel();
+    	  
+
+        // Create a JComboBox with the choices array
+        branchComboBox = new JComboBox<>(branchChoices);      
+
+        // Add an ActionListener to the JComboBox
+        branchComboBox.addActionListener(null);
+        
+        branchPanel=new JPanel();
     	branchPanel.add(branchLabel);
-    	branchPanel.add(branchTextField);
+    	branchPanel.add(branchComboBox);
+    	
+
     	
     	passLabel = new JLabel();  
         passLabel.setText("PASSWORD");     
@@ -102,6 +112,7 @@ class SignUpScreen extends JPanel implements ActionListener
         submitPanel=new JPanel();
         submitPanel.add(b1);
     	
+        
         add(headingPanel);
         add(sapIdPanel);
         add(rollnoPanel);
@@ -127,7 +138,7 @@ class SignUpScreen extends JPanel implements ActionListener
     	double cgpaValue=Double.parseDouble(cgpaTextField.getText());
     	int currentSemValue=Integer.parseInt(currentSemTextField.getText());
     	int totalSemValue=Integer.parseInt(totalSemTextField.getText());
-    	String branchValue=branchTextField.getText();
+    	String branchValue=branchComboBox.getSelectedItem().toString();
     	String passValue=passTextField.getText();
     	
     	User currentUser=db.addUser(sapIdValue, rollnoValue,nameValue,cgpaValue,currentSemValue, totalSemValue, branchValue,passValue);
@@ -135,6 +146,7 @@ class SignUpScreen extends JPanel implements ActionListener
     	//db.addUser("1000015166","200102529","Ehson",7.82,7,8,"BT-CSE","G13pics007@");;
         //check whether the credentials are authentic or not  
         if (currentUser!=null) {  //if authentic, navigate user to a new page  
+        	 
              System.out.println("logged in as:"); 
              System.out.println(currentUser); 
             

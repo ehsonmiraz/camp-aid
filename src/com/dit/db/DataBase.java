@@ -1,5 +1,7 @@
 package com.dit.db;
 import java.sql.*;
+import java.util.*;
+
 import com.dit.models.*;
 public class DataBase {
 	Statement stmt;
@@ -19,12 +21,51 @@ public class DataBase {
   		   		+ "						 sem INT, \r\n"
   		   		+ "						 total_sem INT , \r\n"
   		   		+ "			  		     branch VARCHAR(10) )");
-	  		   
+  		   this.stmt.execute("CREATE TABLE IF NOT EXISTS companies(\r\n"
+   		   		+ "						 id VARCHAR(20) PRIMARY KEY ,\r\n"
+   		   		+ "						 name VARCHAR(20) ,\r\n"
+   		   		+ "						 job_type VARCHAR(11), \r\n"
+   		   		+ "	  		   		     location VARCHAR(20), \r\n"
+   		   		+ "			  		     ctc  INT,\r\n"
+   		   		+ "						 eligibility DOUBLE, \r\n"
+   		   		+ "			  		     branches VARCHAR(30) )");	   
   		   
   	    }
   	    catch(Exception e) {
   		   System.out.println("in cons: "+e.toString());
   	   }
+	}
+	public List<Company> getCompanies(User user){
+		List<Company> companyList=new ArrayList<Company>();
+		 try {
+	    	   String query="SELECT * from companies "
+	    			        +"WHERE   branches LIKE "
+	    			        +"\"%"+ user.branch+"%\" "
+	    			        +"AND eligibility<=" 
+	    			        + user.current_cgpa;
+	    	   System.out.println(query);
+			   ResultSet rs=stmt.executeQuery(query);
+			   ;
+			   while(rs.next()) {
+				   companyList.add(new Company(rs.getString("name"),
+						                   rs.getString("job_type"),
+						                   rs.getString("location"),
+						                   rs.getInt("ctc"),
+						                   rs.getDouble("eligibility"),
+						                   rs.getString("branches").split(",")));
+			   }
+		 }
+		 catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		 return companyList;
+		
 	}
     public User getUser(String sapId,String password) {
     	 try {

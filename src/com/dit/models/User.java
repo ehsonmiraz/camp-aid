@@ -1,13 +1,13 @@
 package com.dit.models;
 
 public class User {
-    String sapId;
-    String rollno;
-    String name;
-    double current_cgpa;
-    int sem;
-    int totalSem;
-    String branch;
+    public String sapId;
+    public String rollno;
+    public String name;
+    public double current_cgpa;
+    public int sem;
+    public int totalSem;
+    public String branch;
     
     
 	public User(String sapId,String rollno,String name,double current_cgpa,int sem,int totalSem,String branch){
